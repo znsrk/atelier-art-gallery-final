@@ -11,7 +11,7 @@ Atelier is a student art gallery with six original illustrations, fictional arti
 - Nine responsive pages with shared navigation and a light/dark setting saved in the browser.
 - A validated sign-in demo that saves the visitor's display name until they sign out.
 - Five gallery FAQs that open and close with jQuery's `.slideToggle()`.
-- Live artwork search from the [Art Institute of Chicago API](https://api.artic.edu/docs/), with artwork links and feedback for empty results or outages.
+- Live artwork search from the [Cleveland Museum of Art API](https://openaccess-api.clevelandart.org/), with artwork links and feedback for empty results or outages.
 - A searchable student collection with a keyboard-friendly lightbox, a personal exhibition planner, and the original registration and contact demos.
 
 ## Run locally

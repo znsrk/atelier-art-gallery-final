@@ -288,20 +288,20 @@ def check_final_features(page, base, expect):
 
     def museum_response(route):
         if "q=Monet" in route.request.url:
-            route.fulfill(json={"data": [{"id": 16568, "title": "Water Lilies", "artist_display": "Claude Monet", "date_display": "1906"}]})
+            route.fulfill(json={"data": [{"accession_number": "1960.81", "title": "Water Lilies (Agapanthus)", "creators": [{"description": "Claude Monet"}], "creation_date": "c. 1915–26"}]})
         elif "q=offline" in route.request.url:
             route.fulfill(status=503)
         else:
             route.fulfill(json={"data": []})
 
-    page.route("https://api.artic.edu/api/v1/artworks/search?**", museum_response)
+    page.route("https://openaccess-api.clevelandart.org/api/artworks/?**", museum_response)
     page.goto(base + "gallery.html#museum-collection")
     for search, message in [("Monet", "Showing 1 museum results."), ("missing", "No artworks found"), ("offline", "The museum collection is unavailable")]:
         page.locator("#museum-search").fill(search)
         page.locator("#museum-submit").click()
         expect(page.locator("#museum-status")).to_contain_text(message)
         if search == "Monet":
-            expect(page.get_by_role("link", name="Water Lilies")).to_have_attribute("href", "https://www.artic.edu/artworks/16568")
+            expect(page.get_by_role("link", name="Water Lilies (Agapanthus)")).to_have_attribute("href", "https://www.clevelandart.org/art/1960.81")
         else:
             expect(page.locator(".museum-card")).to_have_count(0)
     print("PASS: theme and account persistence, form validation, sign-out, FAQ, and museum success/empty/error states.", flush=True)
