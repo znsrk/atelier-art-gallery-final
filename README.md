@@ -8,7 +8,7 @@ Atelier is a student art gallery with six original illustrations, fictional arti
 
 ## Project report
 
-[Download the project report (Word)](docs/AtelierProjectReport.docx)
+[Download the project report (Word)](docs/AtelierProjectReport_Final.docx)
 
 ## Features
 
