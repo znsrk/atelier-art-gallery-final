@@ -6,11 +6,11 @@
 }
 
 .field-feedback.error-text {
-    color: #9c2f27;
+    color: var(--error);
 }
 
 .field-feedback.success-text {
-    color: #365e40;
+    color: var(--success);
 }
 
 .form-hint {

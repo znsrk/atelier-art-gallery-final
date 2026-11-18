@@ -6,6 +6,22 @@
     --accent: #a3462f;
     --line: #d9d5ca;
     --soft: #eeeadf;
+    --button-text: #fff;
+    --error: #943b27;
+    --success: #365e40;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #20241f;
+    --ink: #f7f4ed;
+    --muted: #c8c9bd;
+    --accent: #efa993;
+    --line: #555b51;
+    --soft: #2c322a;
+    --button-text: #271b16;
+    --error: #ffb3a1;
+    --success: #a5d1a7;
 }
 
 /* Basic typography and reusable links. */
@@ -109,7 +125,7 @@ figure {
 
 .gallery-button {
     background: var(--accent);
-    color: white;
+    color: var(--button-text);
     border: 1px solid var(--accent);
     border-radius: 0;
     padding: 15px 24px;
@@ -124,6 +140,7 @@ figure {
 }
 
 .outline-button {
+    color: var(--ink);
     border: 1px solid var(--ink);
     border-radius: 0;
     padding: 15px 24px;
@@ -131,6 +148,7 @@ figure {
 
 .outline-button:hover {
     background: var(--soft);
+    color: var(--ink);
 }
 
 .skip-link {
@@ -182,7 +200,16 @@ figure {
 nav {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 26px;
+}
+
+.theme-toggle {
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    background: var(--soft);
+    color: var(--ink);
+    font-size: .85rem;
 }
 
 nav a {
@@ -580,6 +607,7 @@ nav a[aria-current="page"] {
 .form-control,
 .form-select {
     background-color: var(--paper);
+    color: var(--ink);
     border: 1px solid #aaa697;
     border-radius: 0;
     padding: 12px 14px;
@@ -589,8 +617,60 @@ nav a[aria-current="page"] {
 .form-control:focus,
 .form-select:focus {
     background-color: var(--paper);
+    color: var(--ink);
     border-color: var(--accent);
     box-shadow: none;
+}
+
+.form-control::placeholder {
+    color: var(--muted);
+}
+
+:root[data-theme="dark"] .form-select {
+    appearance: auto;
+    background-image: none;
+}
+
+.account-area {
+    max-width: 640px;
+}
+
+.account-area h2 {
+    margin-bottom: 24px;
+    overflow-wrap: anywhere;
+}
+
+.faq-item {
+    border-top: 1px solid var(--line);
+    max-width: 800px;
+}
+
+.faq-item h3 {
+    margin: 0;
+}
+
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    padding: 16px 0;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    text-align: left;
+    font: inherit;
+    font-size: 1.2rem;
+}
+
+.faq-indicator {
+    color: var(--accent);
+}
+
+.faq-answer {
+    margin: 0;
+    padding-bottom: 16px;
 }
 
 .required {
@@ -624,7 +704,7 @@ nav .join-link {
 }
 
 .field-feedback {
-    color: #943b27;
+    color: var(--error);
     font-size: .8rem;
     min-height: 1.4em;
     margin: 5px 0 0;

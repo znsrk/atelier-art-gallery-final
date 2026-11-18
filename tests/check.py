@@ -57,7 +57,7 @@ def check_files():
         document.feed(path.read_text(encoding="utf-8"))
         assert all(document.tags.count(tag) == 1 for tag in ("header", "main", "footer", "h1")), path.name
         assert all(reference in document.ids for reference in document.references), f"Broken field/ARIA reference: {path.name}"
-        if document.scripts:
+        if "vendor/jquery.min.js" in document.scripts:
             assert document.scripts[0] == "vendor/jquery.min.js", "Load jQuery before application scripts"
         documents[path.name] = document
 
@@ -70,7 +70,7 @@ def check_files():
             assert target.exists(), f"{path.name}: missing {link}"
             if url.fragment and target.suffix == ".html":
                 assert url.fragment in documents[target.name].ids, f"{path.name}: broken fragment {link}"
-    assert len(PAGES) == 8
+    assert len(PAGES) == 9
     assert (ROOT / "js/script.js").is_file()
     assert (ROOT / "vendor/jquery-LICENSE.txt").is_file()
     print(f"PASS: {len(PAGES)} pages, local links, labels, ARIA references, semantic structure, and script order.", flush=True)
@@ -241,6 +241,72 @@ def check_exhibitions(page, base, expect):
     print("PASS: complete CRUD, confirmations/cancel, persistence, literal text safety, empty/corrupt data recovery.", flush=True)
 
 
+def check_final_features(page, base, expect):
+    page.goto(base)
+    page.locator("#theme-toggle").click()
+    expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+    page.reload()
+    expect(page.locator("#theme-toggle")).to_have_text("Light mode")
+
+    page.locator("#account-link").click()
+    expect(page.locator("html")).to_have_attribute("data-theme", "dark")
+    page.locator("#sign-in-name").fill("  ")
+    page.locator("#sign-in-email").fill("invalid")
+    page.locator("#sign-in-form button").click()
+    assert page.locator("#sign-in-email").evaluate("input => !input.validity.valid")
+    page.locator("#sign-in-email").fill("visitor@example.com")
+    page.locator("#sign-in-form button").click()
+    assert page.locator("#sign-in-name").evaluate("input => !input.validity.valid")
+    page.locator("#sign-in-name").fill("Atelier Visitor")
+    page.locator("#sign-in-form button").click()
+    expect(page.locator("#visitor-greeting")).to_have_text("Welcome, Atelier Visitor.")
+    page.reload()
+    expect(page.locator("#signed-in-panel")).to_be_visible()
+    page.goto(base + "about.html#faq")
+    expect(page.locator("#account-link")).to_have_text("Account")
+
+    questions = page.locator(".faq-question")
+    expect(questions).to_have_count(5)
+    for question in questions.all():
+        answer = page.locator("#" + question.get_attribute("aria-controls"))
+        expect(answer).to_be_hidden()
+        question.press("Enter")
+        expect(answer).to_be_visible()
+        expect(question.locator(".faq-indicator")).to_have_text("−")
+        expect(question).to_have_attribute("aria-expanded", "true")
+        question.click()
+        expect(answer).to_be_hidden()
+        expect(question.locator(".faq-indicator")).to_have_text("+")
+
+    page.locator("#account-link").click()
+    page.locator("#sign-out").click()
+    page.reload()
+    expect(page.locator("#sign-in-form")).to_be_visible()
+    assert page.evaluate("localStorage.getItem('atelier-visitor')") is None
+    page.locator("#theme-toggle").click()
+    expect(page.locator("html")).to_have_attribute("data-theme", "light")
+
+    def museum_response(route):
+        if "q=Monet" in route.request.url:
+            route.fulfill(json={"data": [{"id": 16568, "title": "Water Lilies", "artist_display": "Claude Monet", "date_display": "1906"}]})
+        elif "q=offline" in route.request.url:
+            route.fulfill(status=503)
+        else:
+            route.fulfill(json={"data": []})
+
+    page.route("https://api.artic.edu/api/v1/artworks/search?**", museum_response)
+    page.goto(base + "gallery.html#museum-collection")
+    for search, message in [("Monet", "Showing 1 museum results."), ("missing", "No artworks found"), ("offline", "The museum collection is unavailable")]:
+        page.locator("#museum-search").fill(search)
+        page.locator("#museum-submit").click()
+        expect(page.locator("#museum-status")).to_contain_text(message)
+        if search == "Monet":
+            expect(page.get_by_role("link", name="Water Lilies")).to_have_attribute("href", "https://www.artic.edu/artworks/16568")
+        else:
+            expect(page.locator(".museum-card")).to_have_count(0)
+    print("PASS: theme and account persistence, form validation, sign-out, FAQ, and museum success/empty/error states.", flush=True)
+
+
 def check_browser(base, screenshots):
     try:
         from playwright.sync_api import expect, sync_playwright
@@ -270,7 +336,8 @@ def check_browser(base, screenshots):
                 response = page.goto(base + path.name)
                 assert response and response.status == 200, f"HTTP failure: {path.name}"
                 assert page.evaluate("document.documentElement.scrollWidth <= innerWidth"), f"Overflow: {path.name} at {width}px"
-                expect(page.locator("nav a")).to_have_count(7)
+                expect(page.locator("nav a")).to_have_count(8)
+                expect(page.locator("#theme-toggle")).to_be_visible()
                 page.locator("img").evaluate_all("images => Promise.all(images.map(image => { image.loading = 'eager'; return image.decode(); }))")
                 if screenshots and width in (1440, 390) and path.name in ("index.html", "gallery.html", "register.html", "exhibitions.html"):
                     output = ROOT / ".qa"
@@ -286,6 +353,8 @@ def check_browser(base, screenshots):
             check_gallery(page, base, expect)
             check_forms(page, base, expect)
             check_exhibitions(page, base, expect)
+
+        check_final_features(page, base, expect)
 
         # Failure to persist still permits editing in the current tab.
         blocked = browser.new_context()

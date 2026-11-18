@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Atelier is a student art gallery featuring original illustrations, imaginary artists, and virtual exhibitions.">
+    <title>Sign in | Atelier Art Gallery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Playfair+Display:wght@400;500;600&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/account.js" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="logo" href="index.html" aria-label="Atelier home"><span class="logo-mark" aria-hidden="true">a.</span> atelier<span class="logo-dot">.</span></a>
+            <nav aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="artists.html">Artists</a>
+                <a href="exhibitions.html">Exhibitions</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a class="join-link" href="register.html">Join the gallery</a>
+                <a id="account-link" href="sign-in.html" aria-current="page">Sign in</a>
+                <button id="theme-toggle" class="theme-toggle" type="button" hidden>Dark mode</button>
+            </nav>
+        </div>
+    </header>
+    <main id="main-content">
+        <section class="page-heading container">
+            <p class="eyebrow">Atelier visitors</p>
+            <h1>Your gallery account<span class="accent">.</span></h1>
+            <p class="page-intro">Try signing in on this browser. Atelier saves your display name here and uses it to welcome you back.</p>
+        </section>
+        <section class="container collection-section" aria-label="Visitor sign-in">
+            <div class="account-area">
+                <noscript><p>Enable JavaScript to use the sign-in demo.</p></noscript>
+                <form id="sign-in-form" class="contact-form">
+                    <h2>Sign in</h2>
+                    <div class="mb-3">
+                        <label for="sign-in-name" class="form-label">Display name</label>
+                        <input id="sign-in-name" class="form-control" type="text" autocomplete="nickname" maxlength="60" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sign-in-email" class="form-label">Email address</label>
+                        <input id="sign-in-email" class="form-control" type="email" autocomplete="email" maxlength="254" required>
+                    </div>
+                    <button type="submit" class="btn gallery-button" disabled>Sign in</button>
+                </form>
+                <div id="signed-in-panel" class="contact-form" hidden>
+                    <h2 id="visitor-greeting" tabindex="-1"></h2>
+                    <p>You are signed in on this browser.</p>
+                    <div class="feature-links">
+                        <a class="btn gallery-button" href="gallery.html">Explore the gallery</a>
+                        <button id="sign-out" class="btn outline-button" type="button">Sign out</button>
+                    </div>
+                </div>
+                <p id="sign-in-message" class="status-message" role="status"></p>
+            </div>
+        </section>
+    </main>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-top">
+                <div>
+                    <a class="footer-logo" href="index.html">atelier.</a>
+                    <p>A little space for a different perspective.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="contact.html">Contact the project team</a>
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+                    <a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer">Pinterest ↗</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Atelier · Student art gallery project</p>
+                <p>Zhanserik Zharylgassyn &amp; Erkebulan Korganbek</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

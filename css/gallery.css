@@ -46,7 +46,7 @@
 .filter-button[aria-pressed="true"] {
     background: var(--accent);
     border-color: var(--accent);
-    color: white;
+    color: var(--button-text);
 }
 
 .gallery-result-count {
@@ -73,7 +73,7 @@
 .lightbox-trigger:hover .art-enlarge,
 .lightbox-trigger:focus .art-enlarge {
     background: var(--accent);
-    color: white;
+    color: var(--button-text);
 }
 
 .gallery-empty {
@@ -99,7 +99,7 @@ body.lightbox-open {
     overflow-y: auto;
     padding: 24px;
     background: rgba(25, 29, 25, .96);
-    color: var(--paper);
+    color: #f7f4ed;
 }
 
 .lightbox-panel {
@@ -124,15 +124,15 @@ body.lightbox-open {
     border: 1px solid #92978d;
     padding: 7px 13px;
     background: transparent;
-    color: var(--paper);
+    color: #f7f4ed;
     font: inherit;
     font-size: .9rem;
 }
 
 .lightbox-button:hover,
 .lightbox-button:focus {
-    background: var(--paper);
-    color: var(--ink);
+    background: #f7f4ed;
+    color: #292d27;
 }
 
 .lightbox-button:disabled {
@@ -198,6 +198,41 @@ body.lightbox-open {
 .lightbox-help {
     margin: 12px 0 0;
     text-align: center;
+}
+
+.museum-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.museum-controls input {
+    flex: 1 1 240px;
+}
+
+.museum-card {
+    border: 1px solid var(--line);
+    padding: 18px;
+    overflow-wrap: anywhere;
+}
+
+.museum-card img {
+    height: 200px;
+    margin-bottom: 16px;
+    background: var(--soft);
+    object-fit: contain;
+}
+
+.museum-card h3 a {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 4px;
+}
+
+.museum-card p {
+    margin-bottom: 6px;
+    font-size: .85rem;
+    white-space: pre-line;
 }
 
 @media (max-width: 767px) {
